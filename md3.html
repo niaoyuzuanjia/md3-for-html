@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material Design 3 组件库</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* MD3 颜色系统 */
+            --primary: #6750A4;
+            --on-primary: #FFFFFF;
+            --primary-container: #EADDFF;
+            --on-primary-container: #21005D;
+            --secondary: #625B71;
+            --on-secondary: #FFFFFF;
+            --secondary-container: #E8DEF8;
+            --on-secondary-container: #1D192B;
+            --tertiary: #7D5260;
+            --on-tertiary: #FFFFFF;
+            --tertiary-container: #FFD8E4;
+            --on-tertiary-container: #31111D;
+            --error: #B3261E;
+            --on-error: #FFFFFF;
+            --error-container: #F9DEDC;
+            --on-error-container: #410E0B;
+            --background: #FFFBFE;
+            --on-background: #1C1B1F;
+            --surface: #FFFBFE;
+            --on-surface: #1C1B1F;
+            --surface-variant: #E7E0EC;
+            --on-surface-variant: #49454F;
+            --outline: #79747E;
+            --shadow: #000000;
+            
+            /* 形状系统 */
+            --shape-corner-extra-small: 4px;
+            --shape-corner-small: 8px;
+            --shape-corner-medium: 12px;
+            --shape-corner-large: 16px;
+            --shape-corner-extra-large: 28px;
+            --shape-corner-full: 9999px;
+            
+            /* 高程阴影 */
+            --elevation-1: 0px 1px 2px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+            --elevation-2: 0px 1px 2px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15);
+            --elevation-3: 0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 1px 3px rgba(0, 0, 0, 0.3);
+            
+            /* 动画曲线 */
+            --motion-easing-emphasized: cubic-bezier(0.2, 0, 0, 1);
+            --motion-duration-short4: 200ms;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--on-background);
+            line-height: 1.5;
+            padding: 16px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1, h2, h3, h4 {
+            margin-bottom: 16px;
+            font-weight: 400;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.25px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 24px;
+            background: var(--surface);
+            border-radius: var(--shape-corner-large);
+            box-shadow: var(--elevation-1);
+        }
+
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 20px;
+        }
+
+        .component-demo {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            padding: 16px;
+            background: var(--surface-variant);
+            border-radius: var(--shape-corner-medium);
+        }
+
+        /* 按钮样式 - MD3 */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 24px;
+            margin: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.1px;
+            text-transform: none;
+            border: none;
+            border-radius: 100px;
+            cursor: pointer;
+            outline: none;
+            transition: all var(--motion-duration-short4) var(--motion-easing-emphasized);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: currentColor;
+            opacity: 0;
+            border-radius: inherit;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover::after {
+            opacity: 0.08;
+        }
+
+        .btn:focus::after {
+            opacity: 0.12;
+        }
+
+        .btn:active::after {
+            opacity: 0.12;
+        }
+
+        .btn-filled {
+            background-color: var(--primary);
+            color: var(--on-primary);
+            box-shadow: var(--elevation-1);
+        }
+
+        .btn-filled:hover {
+            box-shadow: var(--elevation-2);
+        }
+
+        .btn-tonal {
+            background-color: var(--secondary-container);
+            color: var(--on-secondary-container);
+        }
+
+        .btn-outlined {
+            background-color: transparent;
+            color: var(--primary);
+            border: 1px solid var(--outline);
+        }
+
+        .btn-elevated {
+            background-color: var(--surface);
+            color: var(--primary);
+            box-shadow: var(--elevation-1);
+        }
+
+        .btn-elevated:hover {
+            box-shadow: var(--elevation-2);
+        }
+
+        .btn-text {
+            background-color: transparent;
+            color: var(--primary);
+        }
+
+        .btn-disabled {
+            background-color: rgba(28, 27, 31, 0.12);
+            color: rgba(28, 27, 31, 0.38);
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .btn-disabled::after {
+            display: none;
+        }
+
+        .btn-icon {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+
+        /* 选择器样式 - MD3 */
+        .select-container {
+            position: relative;
+            margin: 16px 0;
+            min-width: 200px;
+        }
+
+        .select-label {
+            position: absolute;
+            top: -6px;
+            left: 16px;
+            background: var(--surface);
+            padding: 0 4px;
+            font-size: 12px;
+            color: var(--primary);
+            z-index: 1;
+        }
+
+        .select-box {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid var(--outline);
+            border-radius: var(--shape-corner-medium);
+            font-size: 16px;
+            background-color: var(--surface);
+            appearance: none;
+            cursor: pointer;
+            transition: border-color var(--motion-duration-short4) var(--motion-easing-emphasized);
+        }
+
+        .select-box:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .select-container::after {
+            content: "expand_more";
+            font-family: 'Material Icons';
+            font-size: 18px;
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: var(--on-surface-variant);
+        }
+
+        /* 复选框样式 - MD3 */
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin: 16px 0;
+            cursor: pointer;
+            position: relative;
+            padding-left: 36px;
+            min-height: 24px;
+        }
+
+        .checkbox-input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .checkbox-checkmark {
+            position: absolute;
+            left: 0;
+            height: 18px;
+            width: 18px;
+            background-color: transparent;
+            border: 2px solid var(--on-surface-variant);
+            border-radius: 2px;
+            transition: all var(--motion-duration-short4) var(--motion-easing-emphasized);
+        }
+
+        .checkbox-input:checked ~ .checkbox-checkmark {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .checkbox-checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+            left: 5px;
+            top: 2px;
+            width: 4px;
+            height: 8px;
+            border: solid var(--on-primary);
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .checkbox-input:checked ~ .checkbox-checkmark:after {
+            display: block;
+        }
+
+        .checkbox-label {
+            font-size: 16px;
+            color: var(--on-surface);
+        }
+
+        .checkbox-input:disabled ~ .checkbox-checkmark {
+            border-color: rgba(28, 27, 31, 0.38);
+        }
+
+        .checkbox-input:disabled:checked ~ .checkbox-checkmark {
+            background-color: rgba(28, 27, 31, 0.38);
+            border-color: transparent;
+        }
+
+        .checkbox-input:disabled ~ .checkbox-label {
+            color: rgba(28, 27, 31, 0.38);
+        }
+
+        /* 滑动开关样式 - MD3 */
+        .switch-container {
+            display: flex;
+            align-items: center;
+            margin: 16px 0;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 52px;
+            height: 32px;
+            margin-right: 12px;
+        }
+
+        .switch-input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--surface-variant);
+            border: 2px solid var(--outline);
+            transition: .4s;
+            border-radius: var(--shape-corner-full);
+        }
+
+        .switch-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 6px;
+            bottom: 6px;
+            background-color: var(--outline);
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        .switch-input:checked + .switch-slider {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .switch-input:checked + .switch-slider:before {
+            transform: translateX(20px);
+            background-color: var(--on-primary);
+        }
+
+        .switch-input:disabled + .switch-slider {
+            background-color: rgba(28, 27, 31, 0.12);
+            border-color: rgba(28, 27, 31, 0.12);
+            cursor: not-allowed;
+        }
+
+        .switch-input:disabled + .switch-slider:before {
+            background-color: rgba(28, 27, 31, 0.38);
+        }
+
+        .switch-label {
+            font-size: 16px;
+            color: var(--on-surface);
+        }
+
+        /* 卡片样式 - MD3 */
+        .card {
+            background: var(--surface);
+            border-radius: var(--shape-corner-medium);
+            overflow: hidden;
+            box-shadow: var(--elevation-1);
+            transition: box-shadow 0.3s ease;
+            max-width: 360px;
+        }
+
+        .card:hover {
+            box-shadow: var(--elevation-2);
+        }
+
+        .card-media {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 16px;
+        }
+
+        .card-headline {
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 8px;
+        }
+
+        .card-subhead {
+            font-size: 0.875rem;
+            color: var(--on-surface-variant);
+            margin-bottom: 16px;
+        }
+
+        .card-supporting-text {
+            font-size: 0.875rem;
+            color: var(--on-surface-variant);
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .card-actions {
+            padding: 8px 16px 16px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        /* 芯片组件 - MD3 */
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 16px;
+            margin: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 8px;
+            background-color: var(--surface-variant);
+            color: var(--on-surface-variant);
+            cursor: pointer;
+            transition: all var(--motion-duration-short4) var(--motion-easing-emphasized);
+        }
+
+        .chip:hover {
+            background-color: var(--on-surface-variant);
+            color: var(--surface-variant);
+        }
+
+        .chip-assist {
+            background-color: transparent;
+            border: 1px solid var(--outline);
+        }
+
+        .chip-filter {
+            padding-left: 12px;
+        }
+
+        .chip-input {
+            padding-right: 12px;
+        }
+
+        .chip-icon {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+
+        /* 分割线 */
+        .divider {
+            height: 1px;
+            background-color: var(--outline);
+            margin: 16px 0;
+            opacity: 0.38;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Material Design 3 组件库</h1>
+        <p>一套基于Google Material Design 3规范的HTML组件预设</p>
+
+        <!-- 按钮部分 -->
+        <div class="section">
+            <h2>按钮组件</h2>
+            <div class="component-grid">
+                <div class="component-demo">
+                    <button class="btn btn-filled">
+                        <i class="material-icons btn-icon">favorite</i>
+                        填充按钮
+                    </button>
+                    <button class="btn btn-filled" disabled>禁用填充按钮</button>
+                </div>
+                <div class="component-demo">
+                    <button class="btn btn-tonal">强调按钮</button>
+                    <button class="btn btn-tonal" disabled>禁用强调按钮</button>
+                </div>
+                <div class="component-demo">
+                    <button class="btn btn-outlined">轮廓按钮</button>
+                    <button class="btn btn-outlined" disabled>禁用轮廓按钮</button>
+                </div>
+                <div class="component-demo">
+                    <button class="btn btn-elevated"> elevated按钮</button>
+                    <button class="btn btn-elevated" disabled>禁用 elevated按钮</button>
+                </div>
+                <div class="component-demo">
+                    <button class="btn btn-text">文本按钮</button>
+                    <button class="btn btn-text" disabled>禁用文本按钮</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 选择器部分 -->
+        <div class="section">
+            <h2>选择器组件</h2>
+            <div class="component-grid">
+                <div class="component-demo">
+                    <div class="select-container">
+                        <span class="select-label">选择选项</span>
+                        <select class="select-box">
+                            <option value="" disabled selected>请选择一个选项</option>
+                            <option value="1">选项一</option>
+                            <option value="2">选项二</option>
+                            <option value="3">选项三</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="component-demo">
+                    <div class="select-container">
+                        <span class="select-label">选择水果</span>
+                        <select class="select-box">
+                            <option value="" disabled selected>选择你喜欢的水果</option>
+                            <option value="apple">苹果</option>
+                            <option value="banana">香蕉</option>
+                            <option value="orange">橙子</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 复选框部分 -->
+        <div class="section">
+            <h2>复选框组件</h2>
+            <div class="component-grid">
+                <div class="component-demo">
+                    <label class="checkbox-container">
+                        <input type="checkbox" class="checkbox-input" checked>
+                        <span class="checkbox-checkmark"></span>
+                        <span class="checkbox-label">选中状态</span>
+                    </label>
+                    <label class="checkbox-container">
+                        <input type="checkbox" class="checkbox-input">
+                        <span class="checkbox-checkmark"></span>
+                        <span class="checkbox-label">未选中状态</span>
+                    </label>
+                    <label class="checkbox-container">
+                        <input type="checkbox" class="checkbox-input" disabled>
+                        <span class="checkbox-checkmark"></span>
+                        <span class="checkbox-label">禁用状态</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- 滑动开关部分 -->
+        <div class="section">
+            <h2>滑动开关组件</h2>
+            <div class="component-grid">
+                <div class="component-demo">
+                    <label class="switch-container">
+                        <div class="switch">
+                            <input type="checkbox" class="switch-input" checked>
+                            <span class="switch-slider"></span>
+                        </div>
+                        <span class="switch-label">开启状态</span>
+                    </label>
+                    <label class="switch-container">
+                        <div class="switch">
+                            <input type="checkbox" class="switch-input">
+                            <span class="switch-slider"></span>
+                        </div>
+                        <span class="switch-label">关闭状态</span>
+                    </label>
+                    <label class="switch-container">
+                        <div class="switch">
+                            <input type="checkbox" class="switch-input" disabled>
+                            <span class="switch-slider"></span>
+                        </div>
+                        <span class="switch-label">禁用状态</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片部分 -->
+        <div class="section">
+            <h2>卡片组件</h2>
+            <div class="component-grid">
+                <div class="card">
+                    <img src="https://via.placeholder.com/360x180/6750A4/ffffff?text=Material+Design+3" alt="卡片图片" class="card-media">
+                    <div class="card-content">
+                        <h3 class="card-headline">卡片标题</h3>
+                        <p class="card-subhead">副标题或说明文字</p>
+                        <p class="card-supporting-text">这里是卡片的详细内容描述，可以包含多行文本内容，用于展示更多相关信息。</p>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-text">取消</button>
+                        <button class="btn btn-filled">确定</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <h3 class="card-headline">纯文字卡片</h3>
+                        <p class="card-subhead">没有图片的卡片</p>
+                        <p class="card-supporting-text">这是一个没有图片的卡片示例，完全由文字内容组成，适合不需要视觉元素的场景。</p>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="card-actions">
+                        <button class="btn btn-text">操作一</button>
+                        <button class="btn btn-text">操作二</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 芯片组件部分 -->
+        <div class="section">
+            <h2>芯片组件</h2>
+            <div class="component-grid">
+                <div class="component-demo">
+                    <div class="chip">
+                        <i class="material-icons chip-icon">face</i>
+                        辅助芯片
+                    </div>
+                    <div class="chip chip-assist">
+                        轮廓芯片
+                    </div>
+                    <div class="chip chip-filter">
+                        过滤芯片
+                        <i class="material-icons chip-icon">cancel</i>
+                    </div>
+                    <div class="chip chip-input">
+                        <i class="material-icons chip-icon">event</i>
+                        输入芯片
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 简单的交互逻辑示例
+        document.addEventListener('DOMContentLoaded', function() {
+            // 为所有按钮添加点击效果
+            const buttons = document.querySelectorAll('.btn:not(.btn-disabled)');
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            });
+
+            // 选择器交互
+            const selects = document.querySelectorAll('.select-box');
+            selects.forEach(select => {
+                select.addEventListener('change', function() {
+                    if(this.value) {
+                        this.style.borderColor = 'var(--primary)';
+                    }
+                });
+            });
+
+            // 芯片点击效果
+            const chips = document.querySelectorAll('.chip');
+            chips.forEach(chip => {
+                chip.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
